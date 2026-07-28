@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de origen">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{0ef9e3d9-6416-4088-819a-1009e6d22e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{1b28ceec-0f89-4e35-9d1e-1ab50cc86280}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TJuegos_EP.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\AssetManager.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Camera.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\FollowCamera.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\SpriteAnimator.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\SpriteRenderer.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Player.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Paloma.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Perro.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\PowerUp.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\HUD.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Boss.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Projectile.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Box.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\LevelBuilder.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CollisionSystem.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\GameStateManager.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\PlayerBuilder.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine\AssetManager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Camera.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Component.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\FollowCamera.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameObject.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Scene.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\SpriteAnimator.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\SpriteRenderer.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Transform.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Enemy.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Paloma.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Perro.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\PowerUp.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HUD.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Boss.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Projectile.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Box.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CollisionManager.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\LevelBuilder.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CollisionSystem.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\SoundManager.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameStateManager.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\PlayerBuilder.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Player.h">
+      <Filter>game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
