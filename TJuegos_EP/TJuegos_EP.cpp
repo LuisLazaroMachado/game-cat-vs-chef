@@ -149,7 +149,11 @@ LevelData level;
             currentFrameH
         };
 
-        if (spacePressed) audio.playSfx("salto");
+        if (spacePressed) {
+            SDL_Log(">>> INTENTANDO REPRODUCIR SALTO, gameState=%d", (int)gameState);
+            audio.playSfx("salto");
+        }
+
         if (pc) {
             pc->onGround = false;
         }
@@ -198,8 +202,11 @@ LevelData level;
         } // cierra if (gameState == PLAYING)
 
         // ── Música según pantalla/nivel ─────────────────────────────────────
+
         bool isMenuOrPlayingScreen = (gameState == GameState::MENU || gameState == GameState::INFO ||
             gameState == GameState::PLAYING);
+        static bool loggedOnce = false;
+        if (!loggedOnce) { SDL_Log(">>> Primer frame: isMenuOrPlayingScreen=%d currentLevel=%d", isMenuOrPlayingScreen, currentLevel); loggedOnce = true; }
         audio.updateLevelMusic(isMenuOrPlayingScreen, currentLevel, gameState == GameState::PLAYING);
 
         // ── Render ────────────────────────────────────────────────────────
