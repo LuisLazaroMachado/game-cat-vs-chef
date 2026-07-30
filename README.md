@@ -2,8 +2,7 @@
 
 A 2D platformer built from scratch in **C++** with **SDL3**, developed as part of a game development course. The player controls a small cat who must fight through 3 levels, dodging enemies and facing a final boss — **the Chef**, who is trying to cook him.
 
-![Gameplay](media/gameplay.gif)
----
+![Gameplay](media/gameplay_cat_vs_chef.gif)---
 
 ## 🎮 About the game
 
