@@ -1,50 +1,49 @@
 # 🐱 Cat vs Chef
 
-Mini-juego de plataformas 2D desarrollado en **C++** con **SDL3**, como proyecto del curso de desarrollo de videojuegos. El jugador controla a un gatito que debe atravesar 3 niveles, esquivando enemigos y enfrentando a un jefe final: **el Chef**, que intenta cocinarlo.
+A 2D platformer built from scratch in **C++** with **SDL3**, developed as part of a game development course. The player controls a small cat who must fight through 3 levels, dodging enemies and facing a final boss — **the Chef**, who is trying to cook him.
 
-> 📸 *(Agrega aquí un GIF o screenshot del gameplay — esto es lo primero que la gente ve, vale mucho la pena)*
+![Gameplay](media/gameplay.gif)
+---
+
+## 🎮 About the game
+
+The player fights through 3 levels, dodging enemies (patrolling dogs and a pursuing pigeon) and collecting power-ups dropped from boxes: a fish that grants temporary invulnerability, and a special fish that transforms the player into a **giant tiger** capable of eliminating enemies on contact. At the end of the run, the player faces the Chef, a boss that attacks with projectiles (frying pans) which can be reflected back at him.
+
+- **Win condition:** defeat the Chef.
+- **Lose condition:** player health reaches 0.
 
 ---
 
-## 🎮 Sobre el juego
+## 🕹️ Controls
 
-El jugador debe atravesar 3 niveles esquivando enemigos (perros que patrullan y una paloma que persigue) y recolectando power-ups desde cajas: un pescado que otorga invulnerabilidad temporal, y un pescado especial que transforma al gato en un **tigre gigante** capaz de eliminar enemigos al contacto. Al final del recorrido espera el Chef, un jefe final que ataca con proyectiles (sartenes) que pueden ser reflejados de vuelta.
-
-- **Condición de victoria:** derrotar al Chef.
-- **Condición de derrota:** la vida del jugador llega a 0.
-
----
-
-## 🕹️ Controles
-
-| Tecla | Acción |
+| Key | Action |
 |---|---|
-| `←` / `→` | Moverse horizontalmente |
-| `ESPACIO` | Saltar (mantener presionado = salto más alto). Segundo salto en el aire = *parry* |
-| `SHIFT` izquierdo | Dash (esquiva rápida) |
-| `ESC` | Salir del juego |
-| `↑` / `↓` (en menú) | Cambiar selección |
-| `ESPACIO` / `ENTER` (en menú) | Confirmar selección / avanzar pantallas |
+| `←` / `→` | Move horizontally |
+| `SPACE` | Jump (hold for a higher jump). Second jump in mid-air = *parry* |
+| `Left SHIFT` | Dash (quick evade) |
+| `ESC` | Quit game |
+| `↑` / `↓` (in menu) | Change selection |
+| `SPACE` / `ENTER` (in menu) | Confirm selection / advance screens |
 
 ---
 
-## ✨ Mecánicas implementadas
+## ✨ Features
 
-- **Movimiento y físicas:** gravedad, salto variable, dash, doble salto (parry).
-- **Enemigos:**
-  - 🐕 Perros: patrullan de ida y vuelta, mueren al ser pisados.
-  - 🕊️ Paloma: persigue activamente al jugador.
-  - 👨‍🍳 Boss (Chef): lanza proyectiles, recibe daño al ser reflejados.
+- **Movement & physics:** gravity, variable jump height, dash, double jump (parry).
+- **Enemies:**
+  - 🐕 Dogs: patrol back and forth, defeated by stomping.
+  - 🕊️ Pigeon: actively chases the player.
+  - 👨‍🍳 Boss (Chef): throws projectiles, takes damage when they're reflected back.
 - **Power-ups:**
-  - 🐟 Pescado: invulnerabilidad temporal.
-  - 🐯 Pescado tigre: transforma al jugador en un tigre gigante que elimina perros al contacto.
-- **Niveles:** 3 niveles con enemigos y cajas configurables por nivel.
-- **Audio:** música de fondo por nivel, tema especial para el jefe final, efectos de salto y daño.
-- **Interfaz:** menú principal, pantalla de historia/contexto, pantalla informativa de enemigos y power-ups, pantallas de victoria y derrota.
+  - 🐟 Fish: temporary invulnerability.
+  - 🐯 Tiger fish: transforms the player into a giant tiger that eliminates dogs on contact.
+- **Levels:** 3 levels with per-level enemy and box configuration.
+- **Audio:** per-level background music, a dedicated boss theme, and jump/damage sound effects.
+- **UI/Screens:** main menu, story/context screen, an info screen for enemies and power-ups, and win/lose screens.
 
 ---
 
-## 🛠️ Tecnologías
+## 🛠️ Tech stack
 
 - **C++**
 - **SDL3**
@@ -53,125 +52,144 @@ El jugador debe atravesar 3 niveles esquivando enemigos (perros que patrullan y 
 
 ---
 
-## 🏗️ Arquitectura del proyecto
+## 🧠 Technical highlights
+
+- **Component-based architecture:** custom lightweight `GameObject` / `Component` system (Transform, SpriteRenderer, SpriteAnimator, Player, Enemy, etc.), inspired by common game-engine design patterns.
+- **Builder pattern:** dedicated `PlayerBuilder` and `LevelBuilder` classes to assemble complex game objects and levels, keeping `main.cpp` focused on the game loop rather than construction logic.
+- **Centralized collision system:** a single `CollisionSystem` resolves all gameplay collisions (platforms, boxes, power-ups, projectiles, enemies) once per frame, including tunneling-safe platform collision (prevents the player from falling through the floor at high fall speed).
+- **Finite-state behavior:** explicit state machines for the player (`IDLE`, `WALK`, `JUMP`, `DASH`, `ARMORED`, `TIGER`) and the boss, driving both gameplay logic and animation.
+- **Audio engine integration:** wrapper around SDL3_mixer's new Track/Mixer API, handling music transitions between levels and fire-and-forget sound effect mixing.
+- **Game state management:** a dedicated `GameStateManager` for non-gameplay screens (menu, story, info, game over, victory), decoupled from the core gameplay loop.
+- **Asset caching:** centralized `AssetManager` to load and cache textures, avoiding redundant disk reads.
+- **Cross-machine build & distribution:** configured external native dependencies (SDL3, SDL3_image, SDL3_mixer, GLEW) via Visual Studio project properties, plus a packaged, dependency-free release build for end users.
+
+---
+
+## 🏗️ Project architecture
 
 ```
 main.cpp
- ├─ SoundManager         → carga/reproduce audio
- ├─ PlayerBuilder        → crea al jugador
- ├─ LevelBuilder         → crea perros, paloma, boss, cajas, proyectiles, plataformas
- │                          └─ avanza de nivel (advanceLevel)
- ├─ Scene (motor)        → actualiza y renderiza todos los GameObject
- │    ├─ Player          → movimiento, salto, dash, power-ups
- │    ├─ Perro           → patrulla
- │    ├─ Paloma          → persigue al jugador
- │    ├─ Boss            → ataca, recibe daño
- │    ├─ Box / PowerUp   → cajas y power-ups
- │    └─ Projectile      → sartenes del Boss
- ├─ CollisionSystem      → resuelve TODAS las colisiones jugables cada frame
- ├─ GameStateManager     → dibuja Menú / Historia / Info / GameOver / Victoria
- └─ HUD                  → interfaz de vida en pantalla
+ ├─ SoundManager         → loads/plays audio
+ ├─ PlayerBuilder        → builds the player
+ ├─ LevelBuilder         → builds dogs, pigeon, boss, boxes, projectiles, platforms
+ │                          └─ advances levels (advanceLevel)
+ ├─ Scene (engine)       → updates and renders all GameObjects
+ │    ├─ Player          → movement, jump, dash, power-ups
+ │    ├─ Perro (Dog)     → patrol behavior
+ │    ├─ Paloma (Pigeon) → chases the player
+ │    ├─ Boss            → attacks, takes damage
+ │    ├─ Box / PowerUp   → boxes and power-ups
+ │    └─ Projectile      → Boss's frying pans
+ ├─ CollisionSystem      → resolves ALL gameplay collisions every frame
+ ├─ GameStateManager     → draws Menu / Story / Info / Game Over / Victory
+ └─ HUD                  → on-screen health interface
 ```
 
-### Carpeta `engine/` — motor base del curso
+### `engine/` — base course engine
 
-| Archivo | Responsabilidad |
+| File | Responsibility |
 |---|---|
-| `Scene.h` | Contenedor de todos los `GameObject` de la escena; llama `update()`/`render()` en cada uno |
-| `GameObject.h` | Entidad base del motor; contiene componentes (Transform, Player, Enemy, etc.) |
-| `Component.h` | Clase base de todos los componentes |
-| `Transform.h` | Posición y escala de cada objeto |
-| `SpriteRenderer` / `SpriteAnimator` | Dibujan y animan spritesheets |
-| `Camera` / `FollowCamera` | Cámara que sigue al jugador |
-| `AssetManager` | Carga y cachea texturas |
+| `Scene.h` | Container for all `GameObject`s in the scene; calls `update()`/`render()` on each one |
+| `GameObject.h` | Base engine entity; holds components (Transform, Player, Enemy, etc.) |
+| `Component.h` | Base class for all components |
+| `Transform.h` | Position and scale of each object |
+| `SpriteRenderer` / `SpriteAnimator` | Draw and animate spritesheets |
+| `Camera` / `FollowCamera` | Camera that follows the player |
+| `AssetManager` | Loads and caches textures |
 
-### Carpeta `game/` — lógica propia del juego
+### `game/` — game-specific logic
 
-| Archivo | Responsabilidad |
+| File | Responsibility |
 |---|---|
-| `Player` | Movimiento, salto, dash, power-ups, animación según estado (IDLE, WALK, JUMP, DASH, ARMORED, TIGER) |
-| `PlayerBuilder` | Construye el `GameObject` del jugador (sprite, animaciones, componente Player) |
-| `Enemy.h` | Clase base de enemigos simples (vida, estado, daño) |
-| `Perro` | Enemigo que patrulla entre dos límites y rebota |
-| `Paloma` | Enemigo que persigue al jugador |
-| `Boss` | Jefe final: se mueve hacia el jugador, ataca con proyectiles, tiene estados de daño |
-| `Box` | Cajas que al ser golpeadas desde abajo liberan un power-up |
-| `PowerUp` | Power-ups que caen de las cajas (física simple de gravedad) |
-| `Projectile` | Sartenes que lanza el Boss; pueden ser reflejadas por el jugador |
-| `CollisionManager.h` | Funciones estáticas de colisión: `checkAABB`, `isStompingEnemy` |
-| `CollisionSystem` | Centraliza todas las colisiones jugables del loop principal |
-| `LevelBuilder` | Construye el nivel completo y maneja el avance de nivel (`advanceLevel`) |
-| `GameStateManager` | Controla las pantallas que no son gameplay: Menú, Historia, Info, Game Over, Victoria |
-| `SoundManager.h` | Gestor de audio con SDL3_mixer |
-| `HUD` | Interfaz en pantalla (vida del jugador, barra de vida del Boss) |
+| `Player` | Movement, jump, dash, power-ups, state-driven animation (IDLE, WALK, JUMP, DASH, ARMORED, TIGER) |
+| `PlayerBuilder` | Builds the player `GameObject` (sprite, animations, Player component) |
+| `Enemy.h` | Base class for simple enemies (health, state, damage) |
+| `Perro` | Enemy that patrols between two bounds and bounces back |
+| `Paloma` | Enemy that chases the player |
+| `Boss` | Final boss: moves toward the player, attacks with projectiles, has damage states |
+| `Box` | Boxes that drop a power-up when hit from below |
+| `PowerUp` | Power-ups dropped from boxes (simple gravity physics) |
+| `Projectile` | Frying pans thrown by the Boss; can be reflected by the player |
+| `CollisionManager.h` | Static collision functions: `checkAABB`, `isStompingEnemy` |
+| `CollisionSystem` | Centralizes all gameplay collisions in the main loop |
+| `LevelBuilder` | Builds the full level and handles level advancement (`advanceLevel`) |
+| `GameStateManager` | Controls non-gameplay screens: Menu, Story, Info, Game Over, Victory |
+| `SoundManager.h` | Audio manager built on SDL3_mixer |
+| `HUD` | On-screen interface (player health, boss health bar) |
 
 ---
 
-## 🔄 Flujo del juego
+## 🔄 Game flow
 
-1. `main()` inicializa SDL3 (video + audio), crea la ventana y el renderer.
-2. Se crea un `SoundManager` y se cargan todos los sonidos.
-3. Se construye la `Scene` y el jugador mediante `PlayerBuilder`.
-4. Se crea la cámara (`Camera` + `FollowCamera`) para que siga al jugador.
-5. `LevelBuilder` construye todo el contenido jugable (enemigos, Boss, cajas, proyectiles).
-6. Comienza el **game loop**:
-   - Se calcula `dt` y se procesan eventos de teclado/ventana.
-   - Si el estado es `PLAYING`: se actualiza la escena, se revisan colisiones con plataformas, se avanza de nivel si corresponde, y `CollisionSystem` resuelve todas las colisiones jugables.
-   - Se revisa condición de victoria/derrota.
-   - Se actualiza la música según la pantalla/nivel actual.
-   - Se renderiza la escena y el HUD, o la pantalla correspondiente (Menú, Historia, GameOver, Victoria) según el estado.
-7. Al cerrar el juego se libera el audio, las texturas y SDL.
+1. `main()` initializes SDL3 (video + audio) and creates the window and renderer.
+2. A `SoundManager` is created and all sounds are loaded.
+3. The `Scene` and the player are built via `PlayerBuilder`.
+4. The camera (`Camera` + `FollowCamera`) is created to follow the player.
+5. `LevelBuilder` constructs all playable content (enemies, Boss, boxes, projectiles).
+6. The **game loop** begins:
+   - `dt` is computed and keyboard/window events are processed.
+   - If the state is `PLAYING`: the scene updates, platform collisions are checked, the level advances if needed, and `CollisionSystem` resolves all gameplay collisions.
+   - Win/lose conditions are checked.
+   - Music is updated based on the current screen/level.
+   - The scene and HUD are rendered, or the corresponding screen (Menu, Story, Game Over, Victory) is drawn based on the current state.
+7. On exit, audio, textures, and SDL are released.
 
 ---
 
-## 🎨 Créditos de assets
+## 🎨 Asset credits
 
-Los assets de sonido y sprites fueron obtenidos de:
+Sound and sprite assets were sourced from:
 
 - [Pixabay – Final Boss Music](https://pixabay.com/es/music/search/final%20boss/)
 - [itch.io – Spritesheet Assets](https://itch.io/game-assets/tag-spritesheet)
 
 ---
 
-## ▶️ Jugarlo sin compilar
+## ▶️ Play without building
 
-Puedes descargar el ejecutable ya compilado (junto a sus DLLs) desde la sección **[Releases](../../releases)** de este repositorio. Descomprime el `.zip` y ejecuta `TJuegos_EP.exe`.
+You can download the pre-built executable (with all required DLLs) from the **[Releases](../../releases)** section of this repository. Unzip it and run `TJuegos_EP.exe`.
 
-## 🚀 Cómo compilar desde el código fuente
+## 🚀 Building from source
 
-Este proyecto usa librerías de desarrollo externas que no están incluidas en el repositorio (por tamaño). Para compilarlo:
+This project relies on external native libraries that are not included in the repository (due to size). To build it:
 
-1. Clona el repositorio.
-2. Descarga las versiones de desarrollo (**VC**, no MinGW) de:
+1. Clone the repository.
+2. Download the **VC** (not MinGW) development versions of:
    - [SDL3](https://github.com/libsdl-org/SDL/releases)
    - [SDL3_image](https://github.com/libsdl-org/SDL_image/releases)
    - [SDL3_mixer](https://github.com/libsdl-org/SDL_mixer/releases)
    - [GLEW](https://glew.sourceforge.net/)
-3. Colócalas en tu sistema (por ejemplo `C:\SDL3`, `C:\SDL_Image`, `C:\SDL_Mixer`, `C:\GLEW`) y en Visual Studio, en las propiedades del proyecto, configura:
-   - **C/C++ → General → Directorios de inclusión adicionales:**
+3. Place them on your system (e.g. `C:\SDL3`, `C:\SDL_Image`, `C:\SDL_Mixer`, `C:\GLEW`), then in Visual Studio, under the project properties, configure:
+   - **C/C++ → General → Additional Include Directories:**
      ```
      C:\SDL3\include;C:\SDL_Image\include;C:\GLEW\include;C:\SDL_Mixer\include;%(AdditionalIncludeDirectories)
      ```
-   - **Vinculador → General → Directorios de bibliotecas adicionales:**
+   - **Linker → General → Additional Library Directories:**
      ```
      C:\SDL3\lib\x64;C:\SDL_Image\lib\x64;C:\GLEW\lib\Release\x64;C:\SDL_Mixer\lib\x64;%(AdditionalLibraryDirectories)
      ```
-   - **Vinculador → Entrada → Dependencias adicionales:**
+   - **Linker → Input → Additional Dependencies:**
      ```
      SDL3.lib;SDL3_image.lib;SDL3_mixer.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)
      ```
-   - **Eventos de compilación → Evento posterior a la compilación:**
+   - **Build Events → Post-Build Event:**
      ```
      xcopy /y "C:\SDL3\lib\x64\SDL3.dll" "$(OutDir)"
      xcopy /y "C:\SDL_Image\lib\x64\SDL3_image.dll" "$(OutDir)"
      copy /y "C:\GLEW\bin\Release\x64\glew32.dll" "$(OutDir)"
      xcopy /y "C:\SDL_Mixer\lib\x64\SDL3_mixer.dll" "$(OutDir)"
      ```
-4. Compila en modo `Debug` o `Release` para `x64`.
-5. Ejecuta el `.exe` generado.
+4. Build in `Debug` or `Release` mode for `x64`.
+5. Run the generated `.exe`.
 
 ---
 
-## 📄 Licencia
+## 👤 Author
 
-Este proyecto se distribuye bajo la licencia MIT. Ver [LICENSE](LICENSE) para más detalles.
+**Luis Lazaro Machado** — [GitHub](https://github.com/LuisLazaroMachado)
+
+---
+
+## 📄 License
+
+This project is distributed under the MIT License. See [LICENSE](LICENSE) for details.
